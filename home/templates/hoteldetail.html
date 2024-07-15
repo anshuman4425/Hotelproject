@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block start %}
+<title>{{ hotel.hotel_name }}</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .hotel-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    .hotel-info {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+    .more-offers {
+        border-left: 1px solid #ddd;
+        padding-left: 20px;
+    }
+    .book-now-btn {
+        background-color: #28a745;
+        color: white;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+</style>
+<div class="container mt-5">
+    <div class="row hotel-info">
+        <div class="col-md-3">
+            <img class="img-fluid hotel-image" src="/media/{{ hotel.Images.first.Images }}" alt="Hotel Image">
+        </div>
+        <div class="col-md-5">
+            <h5>{{ hotel.hotel_name }}</h5>
+            <p>{{ hotel.description }}</p>
+            <p>
+                {% for amenitie in hotel.amenities.all %}
+                    <b>| {{ amenitie.amenity_name }}</b>
+                {% endfor %}
+            </p>
+        </div>
+        <div class="col-md-2 more-offers text-center">
+            <p>Place.com</p>
+            <p>${{ hotel.hotel_price }}</p>
+            <p>Room Count</p>
+            <p>{{ hotel.room_count }}</p>
+        </div>
+        <div class="col-md-2 more-offers text-center">
+            <h4><span class="badge badge-success">Top Deal</span></h4>
+            <div class="btn btn-success">View deal ></div>
+        </div>
+    </div>
+    
+    <div class="row mt-5">
+        <div class="col-md-12 hotel-info">
+            <h4>Book Hotel</h4>
+            <form method="post" action="{% url 'book_hotel' hotel.uid %}">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Book</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}

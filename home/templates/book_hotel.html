@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block start %}
+<title>Book Hotel</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<style>
+    .booking-container {
+        background-color: #f8f9fa;
+        padding: 30px;
+        border-radius: 5px;
+        margin-top: 30px;
+    }
+    .hotel-info {
+        margin-bottom: 20px;
+    }
+    .hotel-image {
+        width: 100%;
+        height: auto;
+        border-radius: 5px;
+    }
+    .hotel-name {
+        font-weight: bold;
+        font-size: 1.5rem;
+    }
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    .btn-primary {
+        background-color: #007bff;
+        border-color: #007bff;
+    }
+</style>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 booking-container">
+            <div class="row hotel-info">
+                <div class="col-md-4">
+                    <img class="img-fluid hotel-image" src="/media/{{ hotel.Images.first.Images }}" alt="Hotel Image">
+                </div>
+                <div class="col-md-8">
+                    <div class="hotel-name">{{ hotel.hotel_name }}</div>
+                    <p>{{ hotel.description }}</p>
+                    <p>
+                        {% for amenity in hotel.amenities.all %}
+                            <span class="badge badge-secondary">{{ amenity.amenity_name }}</span>
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+            <h4>Book Your Stay</h4>
+            <form method="post" action="{% url 'book_hotel' hotel.uid %}">
+                {% csrf_token %}
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="checkIn">Check-in</label>
+                        {{ form.check_in }}
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="checkOut">Check-out</label>
+                        {{ form.check_out }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="bookingType">Booking Type</label>
+                    {{ form.booking_type }}
+                </div>
+                <button type="submit" class="btn btn-primary">Book Now</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+{% endblock %}
